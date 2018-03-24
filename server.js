@@ -8,7 +8,7 @@ var db = require('./src/config/database');
 var fileUpload = require('express-fileupload');
 var path = require("path");
 var createDir = require('./src/utils/createDir');
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 3000;
 
 let musicRoute = require('./src/routes/musicaRoute');
 
