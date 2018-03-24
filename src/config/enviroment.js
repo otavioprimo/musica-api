@@ -7,8 +7,8 @@ var configs = {
         port: 3306
     },
     PROD:{
-        host: "mysql552.umbler.com",
-        database: "callofbreja_prod",
+        host: "mysql472.umbler.com",
+        database: "musicadb",
         username: "otavioprimo",
         password: "6m5nxxk4",
         port: 41890
