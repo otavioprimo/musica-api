@@ -34,7 +34,7 @@ exports.cadastrarMusica = async (req, res) => {
             if (error)
                 return res.status(500).json({ error: true, mensagem: "Ocorreu um erro ao alterar a cadastrar a musica", errmsg: error });
 
-            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'http://musica-app-com.umbler.net/public/musicas/' + arquivo + '.mp3' });
+            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'http://musica-app-com.umbler.net/static/musicas/' + arquivo + '.mp3' });
 
             res.status(HttpStatus.OK).json({ error: false, mensagem: "Cadastrado com sucesso" });
         } catch (err) {
