@@ -28,6 +28,9 @@ app.use(cors());
 app.use(validator());
 app.use(fileUpload());
 
+app.use('/hello', function (req, res) {
+    res.send("Hello World");
+});
 app.use('/static', express.static(__dirname + '/public'));
 app.use('/api/v1/music', musicRoute);
 
