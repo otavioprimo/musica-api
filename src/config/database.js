@@ -2,10 +2,10 @@ const Sequelize = require('sequelize');
 const env = require('./enviroment');
 const musica = require('../models/musicModel');
 
-const sequelize = new Sequelize(env.PROD.database, env.PROD.username, env.PROD.password, {
-    host: env.PROD.host,
+const sequelize = new Sequelize(env.DEV.database, env.DEV.username, env.DEV.password, {
+    host: env.DEV.host,
     dialect: 'mysql',
-    port: env.PROD.port,
+    port: env.DEV.port,
     timezone: '-03:00',
     define: {
         underscored: true

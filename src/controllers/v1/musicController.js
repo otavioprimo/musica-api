@@ -14,7 +14,7 @@ exports.cadastrarMusica = async (req, res) => {
     req.checkBody("nome", "Necessário um nome para a musica").exists();
 
     if (!req.files) {
-        res.status(HttpStatus.OK).json({ error: true, mensagem: "Sem arquivos para upload" });
+        res.status(HttpStatus.BAD_REQUEST).json({ error: true, mensagem: "Sem arquivos para upload" });
         return;
     }
 
@@ -23,22 +23,21 @@ exports.cadastrarMusica = async (req, res) => {
         res.status(HttpStatus.BAD_REQUEST).json(errors);
         return;
     } else {
-
         try {
             //cria o nome do arquivo
             let arquivo = await generateToken();
             let file = req.files.arquivo; //Pega a imagem do request
 
-            let error = await file.mv('./public/musicas/' + arquivo + '.mp3'); //Salva a imagem localmente
+            let error = await file.mv('./public/musicas/' + arquivo + '.mp3'); //Salva o arquivo localmente
 
             if (error)
                 return res.status(500).json({ error: true, mensagem: "Ocorreu um erro ao alterar a cadastrar a musica", errmsg: error });
 
-            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'http://musica-app-com.umbler.net/static/musicas/' + arquivo + '.mp3' });
+            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'C:/Users/otavi/projetos/nodejs/musica-api/public/musicas/' + arquivo + '.mp3' });
 
             res.status(HttpStatus.OK).json({ error: false, mensagem: "Cadastrado com sucesso" });
         } catch (err) {
-            res.status(HttpStatus.Ok).json({ error: true, mensagem: "Ocorreu um erro ao cadastrar a musica", errmsg: err });
+            res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({ error: true, mensagem: "Ocorreu um erro ao cadastrar a musica", errmsg: err });
         }
     }
 }
@@ -54,16 +53,16 @@ exports.buscarMusicas = async (req, res) => {
         return;
     }
 
-    let page = Number(req.query.page) - 1;
+    let offset = (Number(req.query.page) - 1) * req.query.limit;
 
     let musicas = await Musica.findAll({
         where: {
             status: true
         },
         order: [
-            ['name', 'DESC']
+            ['created_at', 'DESC']
         ],
-        offset: Number(page),
+        offset: Number(offset),
         limit: Number(req.query.limit)
     });
 
@@ -77,7 +76,7 @@ exports.buscarMusicasFiltro = async (req, res) => {
             mensagem: "Parametros inválidos",
             page: "Necessário parametro 'page'",
             limit: "Necessário parametro 'limit'",
-            nome:"Necessário um nome para musica"
+            nome: "Necessário um nome para musica"
         });
         return;
     }
