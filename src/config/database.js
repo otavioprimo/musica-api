@@ -24,10 +24,6 @@ db.musica = musica(sequelize, Sequelize);
 sequelize.authenticate()
     .then((data) => {
         console.log("Conectado com sucesso");
-        //Cria dados iniciais no banco, usar somente quando tiver com db.sequelize.sync({force:true}) no arquivo server.js
-        // setTimeout(() => {
-        //     init_db.start(db);
-        // }, 15000);
     })
     .catch((data) => {
         console.log("Erro ao conectar com o banco de dados - " + data);
