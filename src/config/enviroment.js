@@ -7,9 +7,9 @@ var configs = {
         port: 3306
     },
     PROD:{
-        host: "mysql472.umbler.com",
-        database: "musicadb",
-        username: "otavioprimo",
+        host: "mysql857.umbler.com",
+        database: "music_app",
+        username: "music_app",
         password: "6m5nxxk4",
         port: 41890
     }

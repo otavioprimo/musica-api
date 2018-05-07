@@ -33,7 +33,7 @@ exports.cadastrarMusica = async (req, res) => {
             if (error)
                 return res.status(500).json({ error: true, mensagem: "Ocorreu um erro ao alterar a cadastrar a musica", errmsg: error });
 
-            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'C:/Users/otavi/projetos/nodejs/musica-api/public/musicas/' + arquivo + '.mp3' });
+            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'http://music-app-com-br.umbler.net/static/musicas/' + arquivo + '.mp3' });
 
             res.status(HttpStatus.OK).json({ error: false, mensagem: "Cadastrado com sucesso" });
         } catch (err) {
@@ -60,7 +60,7 @@ exports.buscarMusicas = async (req, res) => {
             status: true
         },
         order: [
-            ['created_at', 'DESC']
+            ['id', 'DESC']
         ],
         offset: Number(offset),
         limit: Number(req.query.limit)
