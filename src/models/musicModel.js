@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
         source: { type: Sequelize.STRING },
         artist: { type: Sequelize.STRING, allowNull: false },
         status: { type: Sequelize.BOOLEAN, defaultValue: true },
-        name: { type: Sequelize.STRING, allowNull: false }
+        name: { type: Sequelize.STRING, allowNull: false },
+        deviceid: { type: Sequelize.STRING, allowNull: true }
     }, {
             getterMethods: {
                 avatar() {

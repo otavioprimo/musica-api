@@ -12,6 +12,7 @@ let Musica = db.musica;
 exports.cadastrarMusica = async (req, res) => {
     req.checkBody("artista", "Necessário um artista").exists();
     req.checkBody("nome", "Necessário um nome para a musica").exists();
+    req.checkBody("deviceid", "Necessário o deviceId").exists();
 
     if (!req.files) {
         res.status(HttpStatus.BAD_REQUEST).json({ error: true, mensagem: "Sem arquivos para upload" });
@@ -33,7 +34,7 @@ exports.cadastrarMusica = async (req, res) => {
             if (error)
                 return res.status(500).json({ error: true, mensagem: "Ocorreu um erro ao alterar a cadastrar a musica", errmsg: error });
 
-            await Musica.create({ artist: req.body.artista, name: req.body.nome, source: 'http://music-app-com-br.umbler.net/static/musicas/' + arquivo + '.mp3' });
+            await Musica.create({ artist: req.body.artista, name: req.body.nome, deviceid: req.body.deviceid, source: 'http://music-app-com-br.umbler.net/static/musicas/' + arquivo + '.mp3' });
 
             res.status(HttpStatus.OK).json({ error: false, mensagem: "Cadastrado com sucesso" });
         } catch (err) {
@@ -58,6 +59,34 @@ exports.buscarMusicas = async (req, res) => {
     let musicas = await Musica.findAll({
         where: {
             status: true
+        },
+        order: [
+            ['id', 'DESC']
+        ],
+        offset: Number(offset),
+        limit: Number(req.query.limit)
+    });
+
+    res.status(HttpStatus.OK).json(musicas);
+}
+
+exports.buscarMusicasDevice = async (req, res) => {
+    if (!req.query.page || !req.query.limit) {
+        res.status(HttpStatus.BAD_REQUEST).json({
+            error: true,
+            mensagem: "Parametros inválidos",
+            page: "Necessário parametro 'page'",
+            limit: "Necessário parametro 'limit'",
+        });
+        return;
+    }
+
+    let offset = (Number(req.query.page) - 1) * req.query.limit;
+
+    let musicas = await Musica.findAll({
+        where: {
+            status: true,
+            deviceid: req.params.deviceid
         },
         order: [
             ['id', 'DESC']

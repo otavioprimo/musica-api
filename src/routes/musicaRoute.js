@@ -7,6 +7,9 @@ router.route('/')
     .post(musicController.cadastrarMusica)
     .get(musicController.buscarMusicas);
 
+router.route('/:deviceid')
+    .get(musicController.buscarMusicasDevice);
+
 router.route('/search')
     .get(musicController.buscarMusicasFiltro);
 
