@@ -205,7 +205,7 @@ exports.getTotalMusics = async (req, res) => {
 exports.getGraph = async (req, res) => {
     db.sequelize.query(
         `select  date_format(created_at,'%m') as month,date_format(created_at,'%Y') as year,count(*) as quantity 
-        from musicas
+        from musicas where date_format(created_at,'%y') = date_format(now(),'%y')
         GROUP BY date_format(created_at,'%m/%y');`
     ).spread((results, metadata) => {
         res.status(HttpStatus.OK).send(results);
