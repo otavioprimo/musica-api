@@ -115,12 +115,12 @@ exports.buscarMusicasFiltro = async (req, res) => {
     let musicas = await Musica.findAll({
         where: {
             status: true,
-            [Op.or]:[
+            [Op.or]: [
                 {
                     name: {
                         [Op.like]: '%' + req.query.nome + '%'
                     }
-                },{
+                }, {
                     artist: {
                         [Op.like]: '%' + req.query.nome + '%'
                     }
@@ -134,7 +134,6 @@ exports.buscarMusicasFiltro = async (req, res) => {
         limit: Number(req.query.limit)
     });
 
-    console.log(musicas);
     res.status(HttpStatus.OK).json(musicas);
 }
 
@@ -195,4 +194,20 @@ exports.alterarMusica = async (req, res) => {
 
         res.status(HttpStatus.OK).json({ mensagem: "Alterado com sucesso" });
     }
+}
+
+exports.getTotalMusics = async (req, res) => {
+    db.sequelize.query("SELECT count(*) as total FROM musicas ").spread((results, metadata) => {
+        res.status(HttpStatus.OK).send(results[0]);
+    });
+}
+
+exports.getGraph = async (req, res) => {
+    db.sequelize.query(
+        `select  date_format(created_at,'%m') as month,date_format(created_at,'%Y') as year,count(*) as quantity 
+        from musicas
+        GROUP BY date_format(created_at,'%m/%y');`
+    ).spread((results, metadata) => {
+        res.status(HttpStatus.OK).send(results);
+    });
 }

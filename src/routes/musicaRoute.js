@@ -10,6 +10,13 @@ router.route('/')
 router.route('/search')
     .get(musicController.buscarMusicasFiltro);
 
+
+router.route('/total')
+    .get(musicController.getTotalMusics);
+
+router.route('/graph')
+    .get(musicController.getGraph);
+
 router.route('/:id')
     .get(musicController.buscarMusicasPorId)
     .delete(musicController.deletarMusica)
@@ -17,5 +24,4 @@ router.route('/:id')
 
 router.route('/device/:deviceid')
     .get(musicController.buscarMusicasDevice);
-
 module.exports = router;
