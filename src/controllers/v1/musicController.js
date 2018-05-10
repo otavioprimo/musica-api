@@ -115,9 +115,17 @@ exports.buscarMusicasFiltro = async (req, res) => {
     let musicas = await Musica.findAll({
         where: {
             status: true,
-            name: {
-                [Op.like]: '%' + req.query.nome + '%'
-            }
+            [Op.or]:[
+                {
+                    name: {
+                        [Op.like]: '%' + req.query.nome + '%'
+                    }
+                },{
+                    artist: {
+                        [Op.like]: '%' + req.query.nome + '%'
+                    }
+                }
+            ]
         },
         order: [
             ['name', 'DESC']
@@ -126,5 +134,65 @@ exports.buscarMusicasFiltro = async (req, res) => {
         limit: Number(req.query.limit)
     });
 
+    console.log(musicas);
     res.status(HttpStatus.OK).json(musicas);
+}
+
+exports.buscarMusicasPorId = async (req, res) => {
+    let musica = await Musica.findById(req.params.id);
+
+    if (musica) {
+        res.status(HttpStatus.OK).json(musica);
+    } else {
+        res.status(HttpStatus.NOT_FOUND).json({ mensagem: "Música não encontrada" });
+    }
+}
+
+exports.deletarMusica = async (req, res) => {
+    let musica = await Musica.find({
+        where: {
+            id: req.params.id
+        }
+    });
+
+    let result = await musica.update({
+        status: false
+    });
+
+    res.status(HttpStatus.OK).json({ mensagem: "Deletado com sucesso" });
+}
+
+exports.alterarMusica = async (req, res) => {
+    req.checkBody("artista", "Necessário um artista").exists();
+    req.checkBody("nome", "Necessário um nome para a musica").exists();
+    req.checkBody("deviceid", "Necessário o deviceId").exists();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.status(HttpStatus.BAD_REQUEST).json(errors);
+        return;
+    } else {
+        let musica = await Musica.find({
+            where: {
+                id: req.params.id
+            }
+        });
+
+        if (!musica) {
+            res.status(HttpStatus.NOT_FOUND).json({ mensagem: "Música não encontrada" });
+            return;
+        }
+
+        if (musica.deviceid != req.body.deviceid) {
+            res.status(HttpStatus.OK).json({ mensagem: "Você não tem permissão para alterar esta música" });
+            return;
+        }
+
+        let result = await musica.update({
+            artist: req.body.artista,
+            name: req.body.nome
+        });
+
+        res.status(HttpStatus.OK).json({ mensagem: "Alterado com sucesso" });
+    }
 }

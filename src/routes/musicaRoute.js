@@ -7,10 +7,15 @@ router.route('/')
     .post(musicController.cadastrarMusica)
     .get(musicController.buscarMusicas);
 
-router.route('/:deviceid')
-    .get(musicController.buscarMusicasDevice);
-
 router.route('/search')
     .get(musicController.buscarMusicasFiltro);
+
+router.route('/:id')
+    .get(musicController.buscarMusicasPorId)
+    .delete(musicController.deletarMusica)
+    .put(musicController.alterarMusica);
+
+router.route('/device/:deviceid')
+    .get(musicController.buscarMusicasDevice);
 
 module.exports = router;
