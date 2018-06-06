@@ -1,9 +1,9 @@
-const Sequelize = require('sequelize');
+const Sequelize = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-    var Musica = sequelize.define('musica', {
+    var Musica = sequelize.define("musica", {
         id: { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-        image: { type: Sequelize.STRING, defaultValue: 'https://api.adorable.io/avatar/75/' },
+        image: { type: Sequelize.STRING, defaultValue: "https://api.adorable.io/avatar/75/" },
         source: { type: Sequelize.STRING },
         artist: { type: Sequelize.STRING, allowNull: false },
         status: { type: Sequelize.BOOLEAN, defaultValue: true },
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     }, {
             getterMethods: {
                 avatar() {
-                    return this.getDataValue('image') + this.getDataValue('artist');
+                    return this.getDataValue("image") + this.getDataValue("artist");
                 }
             }
         },

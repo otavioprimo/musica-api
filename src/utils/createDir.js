@@ -1,12 +1,12 @@
-var fs = require('fs');
+var fs = require("fs");
 
 const createDir = (dir) => {
-    // This will create a dir given a path such as './folder/subfolder' 
-    const splitPath = dir.split('/');
+    // This will create a dir given a path such as "./folder/subfolder" 
+    const splitPath = dir.split("/");
     splitPath.reduce((path, subPath) => {
         let currentPath;
-        if (subPath != '.') {
-            currentPath = path + '/' + subPath;
+        if (subPath != ".") {
+            currentPath = path + "/" + subPath;
             if (!fs.existsSync(currentPath)) {
                 fs.mkdirSync(currentPath);
             }
@@ -15,7 +15,7 @@ const createDir = (dir) => {
             currentPath = subPath;
         }
         return currentPath
-    }, '')
+    }, "")
 }
 
 module.exports = createDir;

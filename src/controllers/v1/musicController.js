@@ -1,10 +1,10 @@
-const express = require('express'),
+const express = require("express"),
     app = express(),
-    db = require('../../config/database'),
-    HttpStatus = require('http-status-codes'),
-    async = require('asyncawait/async'),
-    await = require('asyncawait/await'),
-    generateToken = require('../../utils/generateToken');
+    db = require("../../config/database"),
+    HttpStatus = require("http-status-codes"),
+    async = require("asyncawait/async"),
+    await = require("asyncawait/await"),
+    generateToken = require("../../utils/generateToken");
 
 const Op = db.Sequelize.Op;
 let Musica = db.musica;
@@ -29,12 +29,12 @@ exports.cadastrarMusica = async (req, res) => {
             let arquivo = await generateToken();
             let file = req.files.arquivo; //Pega a imagem do request
 
-            let error = await file.mv('./public/musicas/' + arquivo + '.mp3'); //Salva o arquivo localmente
+            let error = await file.mv("./public/musicas/" + arquivo + ".mp3"); //Salva o arquivo localmente
 
             if (error)
                 return res.status(500).json({ error: true, mensagem: "Ocorreu um erro ao alterar a cadastrar a musica", errmsg: error });
 
-            await Musica.create({ artist: req.body.artista, name: req.body.nome, deviceid: req.body.deviceid, source: 'http://music-app-com-br.umbler.net/static/musicas/' + arquivo + '.mp3' });
+            await Musica.create({ artist: req.body.artista, name: req.body.nome, deviceid: req.body.deviceid, source: "http://music-app-com-br.umbler.net/static/musicas/" + arquivo + ".mp3" });
 
             res.status(HttpStatus.OK).json({ error: false, mensagem: "Cadastrado com sucesso" });
         } catch (err) {
@@ -61,7 +61,7 @@ exports.buscarMusicas = async (req, res) => {
             status: true
         },
         order: [
-            ['id', 'DESC']
+            ["id", "DESC"]
         ],
         offset: Number(offset),
         limit: Number(req.query.limit)
@@ -89,7 +89,7 @@ exports.buscarMusicasDevice = async (req, res) => {
             deviceid: req.params.deviceid
         },
         order: [
-            ['id', 'DESC']
+            ["id", "DESC"]
         ],
         offset: Number(offset),
         limit: Number(req.query.limit)
@@ -118,17 +118,17 @@ exports.buscarMusicasFiltro = async (req, res) => {
             [Op.or]: [
                 {
                     name: {
-                        [Op.like]: '%' + req.query.nome + '%'
+                        [Op.like]: "%" + req.query.nome + "%"
                     }
                 }, {
                     artist: {
-                        [Op.like]: '%' + req.query.nome + '%'
+                        [Op.like]: "%" + req.query.nome + "%"
                     }
                 }
             ]
         },
         order: [
-            ['name', 'DESC']
+            ["name", "DESC"]
         ],
         offset: Number(page),
         limit: Number(req.query.limit)
