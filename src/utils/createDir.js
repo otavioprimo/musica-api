@@ -5,7 +5,7 @@ const createDir = (dir) => {
     const splitPath = dir.split("/");
     splitPath.reduce((path, subPath) => {
         let currentPath;
-        if (subPath != ".") {
+        if (subPath !== ".") {
             currentPath = path + "/" + subPath;
             if (!fs.existsSync(currentPath)) {
                 fs.mkdirSync(currentPath);
@@ -14,8 +14,8 @@ const createDir = (dir) => {
         else {
             currentPath = subPath;
         }
-        return currentPath
-    }, "")
-}
+        return currentPath;
+    }, "");
+};
 
 module.exports = createDir;

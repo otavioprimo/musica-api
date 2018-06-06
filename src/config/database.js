@@ -23,10 +23,10 @@ db.musica = musica(sequelize, Sequelize);
 //Conecta com o db
 sequelize.authenticate()
     .then((data) => {
-        console.log("Conectado com sucesso");
+        // console.log("Conectado com sucesso");
     })
     .catch((data) => {
-        console.log("Erro ao conectar com o banco de dados - " + data);
+        // console.log("Erro ao conectar com o banco de dados - " + data);
     });
 
 module.exports = db;

@@ -13,6 +13,6 @@ var configs = {
         password: "6m5nxxk4",
         port: 41890
     }
-}
+};
 
 module.exports = configs;
